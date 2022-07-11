@@ -1,6 +1,6 @@
 # app.py
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import csv
 import time
 
@@ -12,9 +12,10 @@ server_version = 1.0
 def log_traffic():
 	ip = request.remote_addr
 	time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-	with open('log_file.csv', 'a') as f:
+	client_version = request.get_json()["client_version"]
+	with open('log.csv', 'a') as f:
 		writer = csv.writer(f)
-		writer.writerow([time_stamp, ip, server_version])
+		writer.writerow([time_stamp, ip, server_version, client_version])
 	return "Logged traffic", 200
 
 if __name__ == '__main__':
