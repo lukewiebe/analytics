@@ -14,8 +14,12 @@ def log_traffic():
 	time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 	client_version = request.get_json()["client_version"]
 	with open('log.csv', 'a') as f:
-		writer = csv.writer(f)
-		writer.writerow([time_stamp, ip, server_version, client_version])
+		fieldnames = ['datetime', 'ip', 'server_version', 'client_version']
+		writer = csv.DictWriter(f, fieldnames=fieldnames)
+		writer.writerow({'datetime': time_stamp,
+			'ip': ip,
+			'server_version': server_version,
+			'client_version': client_version})
 	return "Logged traffic", 200
 
 if __name__ == '__main__':
