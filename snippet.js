@@ -5,7 +5,8 @@ const url = 'http://127.0.0.1:5000';
 
 // post body data
 const body = {
-	client_version: '1.0'
+	client_version: '1.0',
+	source_page: 'test'
 };
 
 // request options
