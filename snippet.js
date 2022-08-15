@@ -1,7 +1,7 @@
 // snippet.js
 // use fetch API to send POST request
 
-const url = 'http://127.0.0.1:5000';
+const url = 'http://analytics.lukewiebe.tech';
 
 // post body data
 const body = {
