@@ -1,14 +1,14 @@
 # app.py
 
-from flask import Flask, request, jsonify
-import csv
-import time
 import os.path
+import time
+import csv
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-server_version = 1.0
-log_path = 'log.csv'
+SERVER_VERSION = 1.0
+LOG_PATH = 'log.csv'
 
 @app.post("/")
 def log_traffic():
@@ -18,11 +18,11 @@ def log_traffic():
     source_page = request.get_json()["source_page"]
 
     # write log entry to log.csv
-    with open('log.csv', 'a') as f:
+    with open(LOG_PATH, 'a') as f:
         writer = csv.writer(f)
 
         # if log file does not exist, create it and write column names
-        if not os.path.exists(log_path):
+        if not os.path.exists(LOG_PATH):
             writer.writerow([
                 'datetime',
                 'source_page',
@@ -34,7 +34,34 @@ def log_traffic():
         writer.writerow([
             time_stamp,
             source_page,
-            server_version,
+            SERVER_VERSION,
+            client_version
+        ])
+    return "Logged traffic", 200
+
+    # define contents of log entry
+    time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    client_version = request.get_json()["client_version"]
+    source_page = request.get_json()["source_page"]
+
+    # write log entry to log.csv
+    with open('log.csv', 'a') as f:
+        writer = csv.writer(f)
+
+        # if log file does not exist, create it and write column names
+        if not os.path.exists(LOG_PATH):
+            writer.writerow([
+                'datetime',
+                'source_page',
+                'server_version',
+                'client_version'
+            ])
+
+        # write data to log.csv
+        writer.writerow([
+            time_stamp,
+            source_page,
+            SERVER_VERSION,
             client_version
         ])
     return "Logged traffic", 200
